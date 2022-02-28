@@ -10,7 +10,8 @@ import UIKit
 class ToDoListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    
+	@IBOutlet weak var addBarButton: UIBarButtonItem!
+	
     var todoArray = [ "Learn Swift", "Build Apps", "Change the World", "Take a Vacation" ]
     
     override func viewDidLoad() {
@@ -54,7 +55,22 @@ class ToDoListViewController: UIViewController {
 			tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
 		}
 	}
-
+	
+	
+	@IBAction func editPressed(_ sender: UIBarButtonItem) {
+		
+		if tableView.isEditing {
+			tableView.setEditing(false, animated: true)
+			sender.title = "Edit"
+			addBarButton.isEnabled = true
+		}
+		else {
+			tableView.setEditing(true, animated: true)
+			sender.title = "Done"
+			addBarButton.isEnabled = false
+		}
+	}
+	
 }
 
 // MARK: - UITableViewDelegate and UITableViewDataSource Methods
