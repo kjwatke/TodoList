@@ -69,7 +69,7 @@
             <objects>
                 <tableViewController id="Hq6-eQ-Rd5" customClass="TodoDetailTableViewController" customModule="TodoList" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="UOJ-Kt-nvK">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection headerTitle="To Do Item" id="Rjh-ax-Xmi">
@@ -207,7 +207,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sPp-nX-H9Z"/>
+        <segue reference="R0W-s5-VVU"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="labelColor">

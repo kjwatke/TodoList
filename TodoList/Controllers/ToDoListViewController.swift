@@ -91,6 +91,26 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+	
+	
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+		
+		if editingStyle == .delete {
+			
+			todoArray.remove(at: indexPath.row)
+			tableView.deleteRows(at: [indexPath], with: .fade)
+			
+		}
+	}
+	
+	
+	func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+		
+		let itemToMove = todoArray[sourceIndexPath.row]
+		
+		todoArray.remove(at: sourceIndexPath.row)
+		todoArray.insert(itemToMove, at: destinationIndexPath.row)
+	}
     
     
 }
