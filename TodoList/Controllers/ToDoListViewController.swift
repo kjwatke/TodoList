@@ -22,6 +22,38 @@ class ToDoListViewController: UIViewController {
         
     }
 
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "ShowDetail" {
+			let destinationVC = segue.destination as! TodoDetailTableViewController
+			let selectedIndexPath = tableView.indexPathForSelectedRow!.row
+			
+			destinationVC.todoItem = todoArray[selectedIndexPath]
+		}
+		else {
+			if let selectedIndexPath = tableView.indexPathForSelectedRow {
+				tableView.deselectRow(at: selectedIndexPath, animated: true)
+			}
+		}
+	}
+	
+	
+	@IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
+		
+		let source = segue.source as! TodoDetailTableViewController
+		
+		if let selectedIndexPath = tableView.indexPathForSelectedRow {
+			
+			todoArray[selectedIndexPath.row] = source.todoItem
+			tableView.reloadData()
+		}
+		else {
+			let newIndexPath = IndexPath(row: todoArray.count, section: 0)
+			todoArray.append(source.todoItem)
+			tableView.insertRows(at: [newIndexPath], with: .automatic)
+			tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
+		}
+	}
 
 }
 

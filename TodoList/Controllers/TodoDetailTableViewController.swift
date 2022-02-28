@@ -16,9 +16,25 @@ class TodoDetailTableViewController: UITableViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var noteView: UITextView!
     
+	
+	var todoItem: String!
+	
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
+		super.viewDidLoad()
+		
+		if todoItem == nil {
+			todoItem = ""
+		}
+		
+		nameField.text = todoItem
     }
+	
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		
+		todoItem = nameField.text!
+	}
     
     
     // MARK: - @IBAction Methods
