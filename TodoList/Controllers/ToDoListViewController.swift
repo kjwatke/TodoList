@@ -8,11 +8,12 @@
 import UIKit
 
 class ToDoListViewController: UIViewController {
-
+	
+	
     @IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var addBarButton: UIBarButtonItem!
 	
-    var todoArray = [ "Learn Swift", "Build Apps", "Change the World", "Take a Vacation" ]
+	var todoItems: [TodoItem] = []
     
     override func viewDidLoad() {
         
@@ -27,9 +28,9 @@ class ToDoListViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "ShowDetail" {
 			let destinationVC = segue.destination as! TodoDetailTableViewController
-			let selectedIndexPath = tableView.indexPathForSelectedRow!.row
+			let selectedIndexPath = tableView.indexPathForSelectedRow!
 			
-			destinationVC.todoItem = todoArray[selectedIndexPath]
+			destinationVC.todoItem = todoItems[selectedIndexPath.row]
 		}
 		else {
 			if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -45,12 +46,12 @@ class ToDoListViewController: UIViewController {
 		
 		if let selectedIndexPath = tableView.indexPathForSelectedRow {
 			
-			todoArray[selectedIndexPath.row] = source.todoItem
+			todoItems[selectedIndexPath.row] = source.todoItem
 			tableView.reloadData()
 		}
 		else {
-			let newIndexPath = IndexPath(row: todoArray.count, section: 0)
-			todoArray.append(source.todoItem)
+			let newIndexPath = IndexPath(row: todoItems.count, section: 0)
+			todoItems.append(source.todoItem)
 			tableView.insertRows(at: [newIndexPath], with: .automatic)
 			tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
 		}
@@ -78,7 +79,7 @@ class ToDoListViewController: UIViewController {
 extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return todoArray.count
+        return todoItems.count
         
     }
     
@@ -87,7 +88,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
         let id = Constants.cellId
         
         let cell = tableView.dequeueReusableCell(withIdentifier: id, for: indexPath)
-        cell.textLabel?.text = todoArray[indexPath.row]
+		cell.textLabel?.text = todoItems[indexPath.row].name
         
         return cell
     }
@@ -97,7 +98,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 		
 		if editingStyle == .delete {
 			
-			todoArray.remove(at: indexPath.row)
+			todoItems.remove(at: indexPath.row)
 			tableView.deleteRows(at: [indexPath], with: .fade)
 			
 		}
@@ -106,10 +107,10 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 		
-		let itemToMove = todoArray[sourceIndexPath.row]
+		let itemToMove = todoItems[sourceIndexPath.row]
 		
-		todoArray.remove(at: sourceIndexPath.row)
-		todoArray.insert(itemToMove, at: destinationIndexPath.row)
+		todoItems.remove(at: sourceIndexPath.row)
+		todoItems.insert(itemToMove, at: destinationIndexPath.row)
 	}
     
     
