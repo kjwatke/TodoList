@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct TodoItem {
+struct TodoItem: Codable {
 	
 	var name: String
 	var date: Date

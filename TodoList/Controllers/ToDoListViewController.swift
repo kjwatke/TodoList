@@ -21,8 +21,47 @@ class ToDoListViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+		
+		loadData()
         
     }
+	
+	
+	func loadData() {
+		
+		let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+		let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+		
+		guard let data = try? Data(contentsOf: documentURL) else { return }
+		
+		let jsonDecoder = JSONDecoder()
+		
+		do {
+			todoItems = try jsonDecoder.decode(Array<TodoItem>.self, from: data)
+			tableView.reloadData()
+		} catch  {
+			print(error.localizedDescription)
+		}
+	}
+	
+	
+	func saveData() {
+		
+		let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+		let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+		
+		let jsonEncoder = JSONEncoder()
+		let data = try? jsonEncoder.encode(todoItems)
+		
+		do {
+			try data?.write(to: documentURL, options: .noFileProtection)
+		}
+		catch {
+			print(error.localizedDescription)
+		}
+		
+		
+	}
 
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -55,6 +94,7 @@ class ToDoListViewController: UIViewController {
 			tableView.insertRows(at: [newIndexPath], with: .automatic)
 			tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
 		}
+		saveData()
 	}
 	
 	
@@ -100,8 +140,10 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 			
 			todoItems.remove(at: indexPath.row)
 			tableView.deleteRows(at: [indexPath], with: .fade)
+			saveData()
 			
 		}
+		
 	}
 	
 	
@@ -111,6 +153,9 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 		
 		todoItems.remove(at: sourceIndexPath.row)
 		todoItems.insert(itemToMove, at: destinationIndexPath.row)
+		
+		saveData()
+		
 	}
     
     
