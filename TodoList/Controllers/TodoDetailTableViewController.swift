@@ -15,27 +15,44 @@ class TodoDetailTableViewController: UITableViewController {
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var noteView: UITextView!
-    
+	@IBOutlet weak var reminderSwitch: UISwitch!
+	@IBOutlet weak var dateLabel: UILabel!
+	
 	
 	var todoItem: TodoItem!
+	let datePickerIndexPath = IndexPath(row: 1, section: 1)
+	let notesTextViewIndexPath = IndexPath(row: 0, section: 2)
+	let notesRowHeight: CGFloat = 200
+	let defaultRowHeight: CGFloat = 44
+	
 	
     override func viewDidLoad() {
         
 		super.viewDidLoad()
 		
 		if todoItem == nil {
-			todoItem = TodoItem(name: "", date: Date(), notes: "")
+			todoItem = TodoItem(name: "", date: Date(), notes: "", reminderSet: false)
 		}
 		
-		nameField.text = todoItem.name
-		datePicker.date = todoItem.date
-		noteView.text = todoItem.notes
+		updateUI()
+		
     }
 	
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		
-		todoItem = TodoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text)
+		todoItem = TodoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn)
+	}
+	
+	
+	func updateUI() {
+		
+		nameField.text = todoItem.name
+		datePicker.date = todoItem.date
+		noteView.text = todoItem.notes
+		reminderSwitch.isOn = todoItem.reminderSet
+		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
+		
 	}
     
     
@@ -53,10 +70,35 @@ class TodoDetailTableViewController: UITableViewController {
         }
         
     }
+	
+	
+	@IBAction func reminderSwitchFlipped(_ sender: UISwitch) {
+		
+		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
+		tableView.beginUpdates()
+		tableView.endUpdates()
+		
+	}
     
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
     }
     
     
+}
+
+
+extension TodoDetailTableViewController  {
+	
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		
+		switch indexPath {
+			case datePickerIndexPath:
+				return reminderSwitch.isOn ? datePicker.frame.height : 0
+			case notesTextViewIndexPath:
+				return notesRowHeight
+			default:
+				return defaultRowHeight
+		}
+	}
 }
