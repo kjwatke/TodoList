@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import UserNotifications
+
 
 class ToDoListViewController: UIViewController {
 	
@@ -23,8 +25,90 @@ class ToDoListViewController: UIViewController {
         tableView.dataSource = self
 		
 		loadData()
+		authorizeLocalNotifications()
         
     }
+	
+	
+	func setNotifications() {
+		
+		guard todoItems.count > 0 else {
+			return
+		}
+		
+		// Remove all notifications
+		
+		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+		
+		// lets re-create them with the updated data that we just saved
+		
+		for index in 0..<todoItems.count {
+			
+			if todoItems[index].reminderSet {
+				
+				let todo = todoItems[index]
+				todoItems[index].notificationID = setCalendarNotification(
+					title: todo.name , subtitle: "Subtitle goes here", body: todo.notes, badgeNumber: nil, sound: .default, date: todo.date)
+			}
+		}
+	}
+	
+	
+	func authorizeLocalNotifications() {
+		
+		UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound]) { granted, error in
+			
+			guard error == nil else {
+				print(error!.localizedDescription)
+				return
+			}
+			
+			if granted {
+				print("Notifications Authorization Granted!")
+			}
+			else {
+				print("The user denied notifications")
+				//TODO: Tell the user what to do here
+			}
+		}
+	}
+	
+	
+	func setCalendarNotification(title: String, subtitle: String, body: String, badgeNumber: NSNumber?, sound: UNNotificationSound?, date: Date) -> String {
+	
+		// Create content
+		
+		let content = UNMutableNotificationContent()
+		content.title = title
+		content.subtitle = subtitle
+		content.body = body
+		content.sound = sound
+		content.badge = badgeNumber
+		
+		// Create a trigger
+
+		var dateComponent = Calendar.current.dateComponents([.year,.month, .day, .hour, .minute], from: date)
+		dateComponent.second = 00
+		let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
+		
+		// Create request
+		
+		let notificationID = UUID().uuidString
+		let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
+		
+		// register request with the notification center
+		UNUserNotificationCenter.current().add(request) { error in
+			
+			if let error = error {
+				print("Something went wrong. \(error.localizedDescription)")
+			}
+			else {
+				print("Notification Scheduled: \(notificationID), title: \(title)")
+			}
+		}
+		
+		return notificationID
+	}
 	
 	
 	func loadData() {
@@ -60,7 +144,7 @@ class ToDoListViewController: UIViewController {
 			print(error.localizedDescription)
 		}
 		
-		
+		setNotifications()
 	}
 
 	
@@ -82,11 +166,11 @@ class ToDoListViewController: UIViewController {
 	@IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
 		
 		let source = segue.source as! TodoDetailTableViewController
-		
+		print("Todo after being unwinded: ", source.todoItem!)
 		if let selectedIndexPath = tableView.indexPathForSelectedRow {
 			
 			todoItems[selectedIndexPath.row] = source.todoItem
-			tableView.reloadData()
+
 		}
 		else {
 			let newIndexPath = IndexPath(row: todoItems.count, section: 0)
@@ -94,6 +178,7 @@ class ToDoListViewController: UIViewController {
 			tableView.insertRows(at: [newIndexPath], with: .automatic)
 			tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
 		}
+		
 		saveData()
 	}
 	
@@ -124,11 +209,16 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        print("tableView cellForRowAt is now running...")
+		print(todoItems[indexPath.row].completed == true)
         let id = Constants.cellId
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: id, for: indexPath)
-		cell.textLabel?.text = todoItems[indexPath.row].name
+        let cell = tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as! ListTableViewCell
+		cell.delegate = self
+		cell.titleLabel.text = todoItems[indexPath.row].name
+		cell.checkbox.setImage(UIImage(systemName: "rectangle"), for: .normal)
+		cell.checkbox.setImage(UIImage(systemName: "checkmark.rectangle"), for: .selected)
+		cell.checkbox.isSelected = todoItems[indexPath.row].completed
         
         return cell
     }
@@ -159,5 +249,24 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 	}
     
     
+}
+
+
+extension ToDoListViewController: ListTableViewCellDelegate {
+	
+	
+	func checkboxToggle(sender: ListTableViewCell) {
+		
+		if let selectedIndexPath = tableView.indexPath(for: sender) {
+			
+			todoItems[selectedIndexPath.row].completed = !todoItems[selectedIndexPath.row].completed
+			tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+			
+			saveData()
+			
+		}
+	}
+	
+	
 }
 

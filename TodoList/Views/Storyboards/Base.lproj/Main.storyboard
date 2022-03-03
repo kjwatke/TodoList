@@ -20,14 +20,34 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="L57-25-hgD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="L57-25-hgD" customClass="ListTableViewCell" customModule="TodoList" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L57-25-hgD" id="7S3-z0-aei">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OGe-3Y-tRL">
+                                                    <rect key="frame" x="74" y="11" width="320" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TXg-bK-XhP">
+                                                    <rect key="frame" x="20" y="6" width="46" height="31"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain"/>
+                                                    <connections>
+                                                        <action selector="checkboxPressed:" destination="L57-25-hgD" eventType="touchUpInside" id="Rki-id-eln"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="checkbox" destination="TXg-bK-XhP" id="nSJ-WE-heK"/>
+                                            <outlet property="titleLabel" destination="OGe-3Y-tRL" id="boZ-tA-Kyn"/>
                                             <segue destination="Hq6-eQ-Rd5" kind="show" identifier="ShowDetail" id="sPp-nX-H9Z"/>
                                         </connections>
                                     </tableViewCell>
@@ -130,6 +150,9 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="200" id="TUw-rk-b2B"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <action selector="datePickerChanged:" destination="Hq6-eQ-Rd5" eventType="valueChanged" id="K44-y8-s0b"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>

@@ -7,6 +7,17 @@
 
 import UIKit
 
+
+private let dateFormatter: DateFormatter = {
+
+	let dateFormatter = DateFormatter()
+	dateFormatter.dateStyle = .short
+	dateFormatter.timeStyle = .short
+	return dateFormatter
+	
+}()
+
+
 class TodoDetailTableViewController: UITableViewController {
 
     // MARK: - @IBOutlet properties
@@ -31,7 +42,7 @@ class TodoDetailTableViewController: UITableViewController {
 		super.viewDidLoad()
 		
 		if todoItem == nil {
-			todoItem = TodoItem(name: "", date: Date(), notes: "", reminderSet: false)
+			todoItem = TodoItem(name: "", date: Date().addingTimeInterval(24*60*60), notes: "", reminderSet: false, completed: false)
 		}
 		
 		updateUI()
@@ -41,7 +52,10 @@ class TodoDetailTableViewController: UITableViewController {
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		
-		todoItem = TodoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn)
+		print("Preparing to unwind from detail...")
+		print("todoItem.completed = ", todoItem.completed)
+		let completedStatus = todoItem.completed
+		todoItem = TodoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn, completed: completedStatus)
 	}
 	
 	
@@ -52,6 +66,7 @@ class TodoDetailTableViewController: UITableViewController {
 		noteView.text = todoItem.notes
 		reminderSwitch.isOn = todoItem.reminderSet
 		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
+		dateLabel.text = dateFormatter.string(from: todoItem.date)
 		
 	}
     
@@ -77,6 +92,13 @@ class TodoDetailTableViewController: UITableViewController {
 		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
 		tableView.beginUpdates()
 		tableView.endUpdates()
+		
+	}
+	
+	
+	@IBAction func datePickerChanged(_ sender: UIDatePicker) {
+		
+		dateLabel.text = dateFormatter.string(from: sender.date)
 		
 	}
     
