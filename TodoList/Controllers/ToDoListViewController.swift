@@ -215,10 +215,11 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as! ListTableViewCell
 		cell.delegate = self
-		cell.titleLabel.text = todoItems[indexPath.row].name
+//		cell.titleLabel.text = todoItems[indexPath.row].name
+		cell.todoItem = todoItems[indexPath.row]
 		cell.checkbox.setImage(UIImage(systemName: "rectangle"), for: .normal)
 		cell.checkbox.setImage(UIImage(systemName: "checkmark.rectangle"), for: .selected)
-		cell.checkbox.isSelected = todoItems[indexPath.row].completed
+//		cell.checkbox.isSelected = todoItems[indexPath.row].completed
         
         return cell
     }

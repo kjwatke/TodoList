@@ -8,7 +8,7 @@
 import UIKit
 
 
-protocol ListTableViewCellDelegate: class {
+protocol ListTableViewCellDelegate: AnyObject {
 
 	func checkboxToggle(sender:ListTableViewCell)
 	
@@ -17,10 +17,20 @@ protocol ListTableViewCellDelegate: class {
 
 class ListTableViewCell: UITableViewCell {
 	
-	weak var delegate: ListTableViewCellDelegate?
-	
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var checkbox: UIButton!
+	
+	weak var delegate: ListTableViewCellDelegate?
+	var todoItem: TodoItem! {
+		
+		didSet {
+			
+			titleLabel.text = todoItem.name
+			checkbox.isSelected = todoItem.completed
+			
+		}
+		
+	}
 	
 	
 	@IBAction func checkboxPressed(_ sender: UIButton) {
