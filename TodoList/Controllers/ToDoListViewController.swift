@@ -30,97 +30,9 @@ class ToDoListViewController: UIViewController {
 			self.tableView.reloadData()
 		}
 		
-		authorizeLocalNotifications()
+		LocalNotificationManager.authorizeLocalNotifications()
         
     }
-	
-	
-	func setNotifications() {
-		
-		guard todoItems.itemsArray.count > 0 else {
-			return
-		}
-		
-		// Remove all notifications
-		
-		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-		
-		// lets re-create them with the updated data that we just saved
-		
-		for index in 0..<todoItems.itemsArray.count {
-			
-			if todoItems.itemsArray[index].reminderSet {
-				
-				let todo = todoItems.itemsArray[index]
-				todoItems.itemsArray[index].notificationID = setCalendarNotification(
-					title: todo.name , subtitle: "Subtitle goes here", body: todo.notes, badgeNumber: nil, sound: .default, date: todo.date)
-			}
-		}
-	}
-	
-	
-	func authorizeLocalNotifications() {
-		
-		UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound]) { granted, error in
-			
-			guard error == nil else {
-				print(error!.localizedDescription)
-				return
-			}
-			
-			if granted {
-				print("Notifications Authorization Granted!")
-			}
-			else {
-				print("The user denied notifications")
-			}
-		}
-	}
-	
-	
-	func setCalendarNotification(title: String, subtitle: String, body: String, badgeNumber: NSNumber?, sound: UNNotificationSound?, date: Date) -> String {
-	
-		// Create content
-		
-		let content = UNMutableNotificationContent()
-		content.title = title
-		content.subtitle = subtitle
-		content.body = body
-		content.sound = sound
-		content.badge = badgeNumber
-		
-		// Create a trigger
-
-		var dateComponent = Calendar.current.dateComponents([.year,.month, .day, .hour, .minute], from: date)
-		dateComponent.second = 00
-		let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: false)
-		
-		// Create request
-		
-		let notificationID = UUID().uuidString
-		let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
-		
-		// register request with the notification center
-		UNUserNotificationCenter.current().add(request) { error in
-			
-			if let error = error {
-				
-			}
-			else {
-				
-			}
-		}
-		
-		return notificationID
-	}
-	
-	
-	func saveData() {
-		
-		todoItems.saveData()
-		setNotifications()
-		
-	}
 
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -155,7 +67,7 @@ class ToDoListViewController: UIViewController {
 			tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
 		}
 		
-		saveData()
+		todoItems.saveData()
 	}
 	
 	
@@ -203,7 +115,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 			
 			todoItems.itemsArray.remove(at: indexPath.row)
 			tableView.deleteRows(at: [indexPath], with: .fade)
-			saveData()
+			todoItems.saveData()
 			
 		}
 		
@@ -217,7 +129,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 		todoItems.itemsArray.remove(at: sourceIndexPath.row)
 		todoItems.itemsArray.insert(itemToMove, at: destinationIndexPath.row)
 		
-		saveData()
+		todoItems.saveData()
 		
 	}
     
@@ -235,7 +147,7 @@ extension ToDoListViewController: ListTableViewCellDelegate {
 			todoItems.itemsArray[selectedIndexPath.row].completed = !todoItems.itemsArray[selectedIndexPath.row].completed
 			tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
 			
-			saveData()
+			todoItems.saveData()
 			
 		}
 	}
