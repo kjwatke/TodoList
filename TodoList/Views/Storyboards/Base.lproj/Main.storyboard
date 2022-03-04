@@ -150,10 +150,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="Iip-XN-kV4">
-                                                    <rect key="frame" x="20" y="11" width="334" height="178"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="200" id="TUw-rk-b2B"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="20" y="11" width="334" height="216"/>
                                                     <connections>
                                                         <action selector="datePickerChanged:" destination="Hq6-eQ-Rd5" eventType="valueChanged" id="K44-y8-s0b"/>
                                                     </connections>
@@ -163,7 +160,6 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="Iip-XN-kV4" secondAttribute="trailing" id="9b7-68-BIs"/>
                                                 <constraint firstItem="Iip-XN-kV4" firstAttribute="top" secondItem="4b0-sp-IAo" secondAttribute="topMargin" id="cfJ-mf-TKK"/>
                                                 <constraint firstItem="Iip-XN-kV4" firstAttribute="leading" secondItem="4b0-sp-IAo" secondAttribute="leadingMargin" id="gLC-FY-Rf3"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Iip-XN-kV4" secondAttribute="bottom" id="lR4-nZ-zHI"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
