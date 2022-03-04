@@ -68,7 +68,6 @@ class ToDoListViewController: UIViewController {
 			}
 			else {
 				print("The user denied notifications")
-				//TODO: Tell the user what to do here
 			}
 		}
 	}
@@ -100,10 +99,10 @@ class ToDoListViewController: UIViewController {
 		UNUserNotificationCenter.current().add(request) { error in
 			
 			if let error = error {
-				print("Something went wrong. \(error.localizedDescription)")
+				
 			}
 			else {
-				print("Notification Scheduled: \(notificationID), title: \(title)")
+				
 			}
 		}
 		
@@ -149,6 +148,7 @@ class ToDoListViewController: UIViewController {
 
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		
 		if segue.identifier == "ShowDetail" {
 			let destinationVC = segue.destination as! TodoDetailTableViewController
 			let selectedIndexPath = tableView.indexPathForSelectedRow!
@@ -166,7 +166,7 @@ class ToDoListViewController: UIViewController {
 	@IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
 		
 		let source = segue.source as! TodoDetailTableViewController
-		print("Todo after being unwinded: ", source.todoItem!)
+	
 		if let selectedIndexPath = tableView.indexPathForSelectedRow {
 			
 			todoItems[selectedIndexPath.row] = source.todoItem
@@ -209,19 +209,15 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("tableView cellForRowAt is now running...")
-		print(todoItems[indexPath.row].completed == true)
+		
         let id = Constants.cellId
         
         let cell = tableView.dequeueReusableCell(withIdentifier: id, for: indexPath) as! ListTableViewCell
 		cell.delegate = self
-//		cell.titleLabel.text = todoItems[indexPath.row].name
 		cell.todoItem = todoItems[indexPath.row]
-		cell.checkbox.setImage(UIImage(systemName: "rectangle"), for: .normal)
-		cell.checkbox.setImage(UIImage(systemName: "checkmark.rectangle"), for: .selected)
-//		cell.checkbox.isSelected = todoItems[indexPath.row].completed
-        
+
         return cell
+		
     }
 	
 	

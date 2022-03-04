@@ -41,8 +41,18 @@ class TodoDetailTableViewController: UITableViewController {
         
 		super.viewDidLoad()
 		
+		
+		// Handle keyboard if we tap outside of a field
+		
+		let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
+		tap.cancelsTouchesInView = false
+		view.addGestureRecognizer(tap)
+		
+		nameField.delegate = self
+		
 		if todoItem == nil {
 			todoItem = TodoItem(name: "", date: Date().addingTimeInterval(24*60*60), notes: "", reminderSet: false, completed: false)
+			nameField.becomeFirstResponder()
 		}
 		
 		updateUI()
@@ -59,6 +69,18 @@ class TodoDetailTableViewController: UITableViewController {
 	}
 	
 	
+	func enableDisableSaveButton(text: String) {
+		
+		if text.count > 0 {
+			saveBarButton.isEnabled = true
+		}
+		else {
+			saveBarButton.isEnabled = false
+		}
+		
+	}
+	
+	
 	func updateUI() {
 		
 		nameField.text = todoItem.name
@@ -67,6 +89,7 @@ class TodoDetailTableViewController: UITableViewController {
 		reminderSwitch.isOn = todoItem.reminderSet
 		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
 		dateLabel.text = dateFormatter.string(from: todoItem.date)
+		enableDisableSaveButton(text: nameField.text!)
 		
 	}
     
@@ -89,6 +112,8 @@ class TodoDetailTableViewController: UITableViewController {
 	
 	@IBAction func reminderSwitchFlipped(_ sender: UISwitch) {
 		
+		view.endEditing(true)
+		
 		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
 		tableView.beginUpdates()
 		tableView.endUpdates()
@@ -98,6 +123,8 @@ class TodoDetailTableViewController: UITableViewController {
 	
 	@IBAction func datePickerChanged(_ sender: UIDatePicker) {
 		
+		view.endEditing(true)
+		
 		dateLabel.text = dateFormatter.string(from: sender.date)
 		
 	}
@@ -105,6 +132,13 @@ class TodoDetailTableViewController: UITableViewController {
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
     }
+	
+	
+	@IBAction func textFieldEditingChanged(_ sender: UITextField) {
+		
+		enableDisableSaveButton(text: sender.text!)
+		
+	}
     
     
 }
@@ -123,4 +157,16 @@ extension TodoDetailTableViewController  {
 				return defaultRowHeight
 		}
 	}
+}
+
+
+extension TodoDetailTableViewController: UITextFieldDelegate {
+
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		
+		noteView.becomeFirstResponder()
+		return true
+		
+	}
+	
 }
