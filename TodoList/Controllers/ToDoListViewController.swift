@@ -58,6 +58,7 @@ class ToDoListViewController: UIViewController {
 		if let selectedIndexPath = tableView.indexPathForSelectedRow {
 			
 			todoItems.itemsArray[selectedIndexPath.row] = source.todoItem
+			tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
 
 		}
 		else {

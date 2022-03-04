@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import UserNotifications
 
 private let dateFormatter: DateFormatter = {
 
@@ -41,6 +41,9 @@ class TodoDetailTableViewController: UITableViewController {
         
 		super.viewDidLoad()
 		
+		// Setup foreground notification
+		let notificationCenter = NotificationCenter.default
+		notificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
 		
 		// Handle keyboard if we tap outside of a field
 		
@@ -61,12 +64,15 @@ class TodoDetailTableViewController: UITableViewController {
 	
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		
-		print("Preparing to unwind from detail...")
-		print("todoItem.completed = ", todoItem.completed)
+	
 		let completedStatus = todoItem.completed
 		todoItem = TodoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn, completed: completedStatus)
 		
+	}
+	
+	
+	@objc func appActiveNotification() {
+		updateReminderSwitch()
 	}
 	
 	
