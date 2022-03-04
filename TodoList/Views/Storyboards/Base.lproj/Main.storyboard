@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--To Do List View Controller-->
+        <!--Todo List-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ToDoListViewController" customModule="TodoList" customModuleProvider="target" sceneMemberID="viewController">
@@ -66,7 +66,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="G5U-fb-qnw" secondAttribute="trailing" id="tWY-0w-k9J"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="vpH-Vv-um2">
+                    <navigationItem key="navigationItem" title="Todo List" largeTitleDisplayMode="always" id="vpH-Vv-um2">
                         <barButtonItem key="leftBarButtonItem" title="Edit" id="gPP-I4-8bQ">
                             <connections>
                                 <action selector="editPressed:" destination="BYZ-38-t0r" id="r1m-b7-aj8"/>
@@ -195,7 +195,7 @@
                             <outlet property="delegate" destination="Hq6-eQ-Rd5" id="KSa-ZH-CuZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="9Ay-CW-BJc">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="9Ay-CW-BJc">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="JSW-2G-1VW">
                             <connections>
                                 <action selector="cancelButtonPressed:" destination="Hq6-eQ-Rd5" id="iOR-ro-ZKX"/>
@@ -227,8 +227,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rHI-Zl-8Bm" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MqZ-91-LYI">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="MqZ-91-LYI">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
