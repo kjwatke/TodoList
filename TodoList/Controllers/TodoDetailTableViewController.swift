@@ -66,6 +66,7 @@ class TodoDetailTableViewController: UITableViewController {
 		print("todoItem.completed = ", todoItem.completed)
 		let completedStatus = todoItem.completed
 		todoItem = TodoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn, completed: completedStatus)
+		
 	}
 	
 	
@@ -92,6 +93,29 @@ class TodoDetailTableViewController: UITableViewController {
 		enableDisableSaveButton(text: nameField.text!)
 		
 	}
+	
+	
+	func updateReminderSwitch() {
+		
+		LocalNotificationManager.isAuthorized { [weak self] authorized in
+			
+			guard let self = self else { return }
+			
+			DispatchQueue.main.async {
+				if !authorized && self.reminderSwitch.isOn {
+					self.oneButtonAlert(
+						withTitle: "User Has Not Allowed Notifications",
+						withMessage: "To receive alerts for reminders, open the Settings app, select To Do List > Notifications > Allow Notifications")
+					self.reminderSwitch.isOn = false
+				}
+				
+				self.view.endEditing(true)
+				self.dateLabel.textColor = self.reminderSwitch.isOn ? .black : .gray
+				self.tableView.beginUpdates()
+				self.tableView.endUpdates()
+			}
+		}
+	}
     
     
     // MARK: - @IBAction Methods
@@ -111,22 +135,13 @@ class TodoDetailTableViewController: UITableViewController {
 	
 	
 	@IBAction func reminderSwitchFlipped(_ sender: UISwitch) {
-		
-		view.endEditing(true)
-		
-		dateLabel.textColor = reminderSwitch.isOn ? .black : .gray
-		tableView.beginUpdates()
-		tableView.endUpdates()
-		
+		self.updateReminderSwitch()
 	}
 	
 	
 	@IBAction func datePickerChanged(_ sender: UIDatePicker) {
-		
 		view.endEditing(true)
-		
 		dateLabel.text = dateFormatter.string(from: sender.date)
-		
 	}
     
     
@@ -135,9 +150,7 @@ class TodoDetailTableViewController: UITableViewController {
 	
 	
 	@IBAction func textFieldEditingChanged(_ sender: UITextField) {
-		
 		enableDisableSaveButton(text: sender.text!)
-		
 	}
     
     
@@ -147,7 +160,6 @@ class TodoDetailTableViewController: UITableViewController {
 extension TodoDetailTableViewController  {
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		
 		switch indexPath {
 			case datePickerIndexPath:
 				return reminderSwitch.isOn ? datePicker.frame.height : 0
@@ -163,10 +175,8 @@ extension TodoDetailTableViewController  {
 extension TodoDetailTableViewController: UITextFieldDelegate {
 
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		
 		noteView.becomeFirstResponder()
 		return true
-		
 	}
 	
 }

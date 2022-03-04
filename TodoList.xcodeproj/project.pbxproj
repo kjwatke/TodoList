@@ -11,6 +11,7 @@
 		0AC7045027D143F800E98E04 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC7044F27D143F800E98E04 /* ListTableViewCell.swift */; };
 		0AC7045427D295B600E98E04 /* TodoItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC7045327D295B600E98E04 /* TodoItems.swift */; };
 		0AC7045627D2B04100E98E04 /* LocalNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC7045527D2B04100E98E04 /* LocalNotificationManager.swift */; };
+		0AC7045827D2C5B500E98E04 /* UIViewController+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC7045727D2C5B500E98E04 /* UIViewController+alert.swift */; };
 		0AC7579C27CDBBC400FD84BB /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC7579B27CDBBC400FD84BB /* TodoItem.swift */; };
 		0AE13DED27C9CDC900F7B54F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE13DEC27C9CDC900F7B54F /* AppDelegate.swift */; };
 		0AE13DEF27C9CDC900F7B54F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE13DEE27C9CDC900F7B54F /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 		0AC7044F27D143F800E98E04 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		0AC7045327D295B600E98E04 /* TodoItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItems.swift; sourceTree = "<group>"; };
 		0AC7045527D2B04100E98E04 /* LocalNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
+		0AC7045727D2C5B500E98E04 /* UIViewController+alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+alert.swift"; sourceTree = "<group>"; };
 		0AC7579B27CDBBC400FD84BB /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		0AE13DE927C9CDC900F7B54F /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AE13DEC27C9CDC900F7B54F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				0AE13E0027C9D28500F7B54F /* Constants.swift */,
 				0AC7045527D2B04100E98E04 /* LocalNotificationManager.swift */,
+				0AC7045727D2C5B500E98E04 /* UIViewController+alert.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				0AC7045627D2B04100E98E04 /* LocalNotificationManager.swift in Sources */,
 				0AC7579C27CDBBC400FD84BB /* TodoItem.swift in Sources */,
 				0A8E7EA527CB234500BD0206 /* TodoDetailTableViewController.swift in Sources */,
+				0AC7045827D2C5B500E98E04 /* UIViewController+alert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
